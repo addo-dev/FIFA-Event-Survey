@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIFA Event Feedback</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            user-select: none; /* Prevents text selection highlights on tablet */
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent; /* Removes blue flash on tap for Fire tablets */
+        }
+
+        body {
+            background-color: #f4f6f9;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #1a1a1a;
+            margin-bottom: 50px;
+            font-weight: 700;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            width: 100%;
+        }
+
+        .feedback-btn {
+            background: white;
+            border: 4px solid transparent;
+            border-radius: 24px;
+            padding: 35px 10px;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .feedback-btn:active {
+            transform: scale(0.92);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        /* Specific button active borders for visual confirmation */
+        #btn-excellent:active { border-color: #2ec4b6; }
+        #btn-good:active { border-color: #c7f9cc; }
+        #btn-fair:active { border-color: #ff9f1c; }
+        #btn-poor:active { border-color: #e71d36; }
+
+        .emoji {
+            font-size: 5.5rem;
+            margin-bottom: 15px;
+        }
+
+        .label {
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        /* Thank You Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(26, 26, 26, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+            z-index: 10;
+        }
+
+        .overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .overlay-content {
+            text-align: center;
+            color: white;
+        }
+
+        .overlay-emoji {
+            font-size: 6rem;
+            margin-bottom: 20px;
+            animation: pulse 1s infinite alternate;
+        }
+
+        .overlay h2 {
+            font-size: 3rem;
+            font-weight: 700;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>How is your experience today?</h1>
+        
+        <div class="button-grid">
+            <button class="feedback-btn" id="btn-excellent" onclick="submitFeedback('Excellent')">
+                <span class="emoji">😁</span>
+                <span class="label">Great</span>
+            </button>
+            <button class="feedback-btn" id="btn-good" onclick="submitFeedback('Good')">
+                <span class="emoji">🙂</span>
+                <span class="label">Good</span>
+            </button>
+            <button class="feedback-btn" id="btn-fair" onclick="submitFeedback('Fair')">
+                <span class="emoji">😐</span>
+                <span class="label">OK</span>
+            </button>
+            <button class="feedback-btn" id="btn-poor" onclick="submitFeedback
