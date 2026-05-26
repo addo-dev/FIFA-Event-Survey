@@ -1,148 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FIFA Event Feedback</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            user-select: none; /* Prevents text selection highlights on tablet */
-            -webkit-user-select: none;
-            -webkit-tap-highlight-color: transparent; /* Removes blue flash on tap for Fire tablets */
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Event Feedback</title>
+  <style>
+    /* Coca-Cola / FIFA Vibe Styling */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      background-color: #F40009; /* Coca-Cola Red */
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+      user-select: none;
+    }
 
-        body {
-            background-color: #f4f6f9;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-        }
+    h1 {
+      font-size: 4rem;
+      margin-bottom: 3rem;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
 
-        .container {
-            text-align: center;
-            width: 100%;
-            max-width: 800px;
-            padding: 20px;
-        }
+    .faces-container {
+      display: flex;
+      gap: 2rem;
+    }
 
-        h1 {
-            font-size: 2.5rem;
-            color: #1a1a1a;
-            margin-bottom: 50px;
-            font-weight: 700;
-        }
+    .face-btn {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      border: 6px solid white;
+      font-size: 5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.1s;
+      box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+    }
 
-        .button-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            width: 100%;
-        }
+    .face-btn:active {
+      transform: scale(0.9);
+    }
 
-        .feedback-btn {
-            background: white;
-            border: 4px solid transparent;
-            border-radius: 24px;
-            padding: 35px 10px;
-            cursor: pointer;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.05);
-            transition: transform 0.1s ease, box-shadow 0.1s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
+    /* Intuitive Colors */
+    .very-happy { background-color: #4CAF50; }
+    .happy { background-color: #8BC34A; }
+    .unhappy { background-color: #FF9800; }
+    .very-unhappy { background-color: #D32F2F; }
 
-        .feedback-btn:active {
-            transform: scale(0.92);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
+    /* Thank You Overlay */
+    #thank-you {
+      display: none;
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(244, 0, 9, 0.95);
+      z-index: 10;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 5rem;
+      font-weight: bold;
+      text-align: center;
+    }
 
-        /* Specific button active borders for visual confirmation */
-        #btn-excellent:active { border-color: #2ec4b6; }
-        #btn-good:active { border-color: #c7f9cc; }
-        #btn-fair:active { border-color: #ff9f1c; }
-        #btn-poor:active { border-color: #e71d36; }
+    /* Falling Soccer Balls */
+    .soccer-ball {
+      position: absolute;
+      font-size: 3rem;
+      top: -50px;
+      z-index: 15;
+      animation: fall linear forwards;
+    }
 
-        .emoji {
-            font-size: 5.5rem;
-            margin-bottom: 15px;
-        }
-
-        .label {
-            font-size: 1.35rem;
-            font-weight: 600;
-            color: #4a5568;
-        }
-
-        /* Thank You Overlay */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(26, 26, 26, 0.95);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.2s ease;
-            z-index: 10;
-        }
-
-        .overlay.show {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .overlay-content {
-            text-align: center;
-            color: white;
-        }
-
-        .overlay-emoji {
-            font-size: 6rem;
-            margin-bottom: 20px;
-            animation: pulse 1s infinite alternate;
-        }
-
-        .overlay h2 {
-            font-size: 3rem;
-            font-weight: 700;
-        }
-
-        @keyframes pulse {
-            from { transform: scale(1); }
-            to { transform: scale(1.1); }
-        }
-    </style>
+    @keyframes fall {
+      to { transform: translateY(110vh) rotate(360deg); }
+    }
+  </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>How is your experience today?</h1>
-        
-        <div class="button-grid">
-            <button class="feedback-btn" id="btn-excellent" onclick="submitFeedback('Excellent')">
-                <span class="emoji">😁</span>
-                <span class="label">Great</span>
-            </button>
-            <button class="feedback-btn" id="btn-good" onclick="submitFeedback('Good')">
-                <span class="emoji">🙂</span>
-                <span class="label">Good</span>
-            </button>
-            <button class="feedback-btn" id="btn-fair" onclick="submitFeedback('Fair')">
-                <span class="emoji">😐</span>
-                <span class="label">OK</span>
-            </button>
-            <button class="feedback-btn" id="btn-poor" onclick="submitFeedback
+  <h1>How is your experience today?</h1>
+
+  <div class="faces-container">
+    <button class="face-btn very-happy" onclick="submitFeedback('Very Happy')">😃</button>
+    <button class="face-btn happy" onclick="submitFeedback('Happy')">🙂</button>
+    <button class="face-btn unhappy" onclick="submitFeedback('Unhappy')">😕</button>
+    <button class="face-btn very-unhappy" onclick="submitFeedback('Very Unhappy')">☹️</button>
+  </div>
+
+  <div id="thank-you">
+    <div>Thank you for your feedback!</div>
+  </div>
+
+  <script>
+    // --- REPLACE THIS URL WITH YOUR GOOGLE APPS SCRIPT WEB APP URL ---
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyeWG0NfKaZMNbnl5u-STkRd3NKkFZQVbRyH5ozcJ7_Qv4pkb8fLacgpriGovm8_qfmyA/exec";
+
+    function submitFeedback(rating) {
+      // 1. Show the Thank You screen
+      document.getElementById('thank-you').style.display = 'flex';
+      
+      // 2. Trigger Soccer Balls
+      triggerSoccerBalls();
+
+      // 3. Send Data to Google Sheets
+      const formData = new FormData();
+      formData.append('rating', rating);
+
+      // We use mode: 'no-cors' so the browser doesn't block the request to the Google script.
+      fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: formData
+      }).catch(error => console.error('Error recording feedback:', error));
+
+      // 4. Reset after 3.5 seconds for the next person
+      setTimeout(() => {
+        document.getElementById('thank-you').style.display = 'none';
+      }, 3500);
+    }
+
+    function triggerSoccerBalls() {
+      for (let i = 0; i < 20; i++) {
+        setTimeout(() => {
+          const ball = document.createElement('div');
+          ball.innerText = '⚽';
+          ball.classList.add('soccer-ball');
+          // Random horizontal position
+          ball.style.left = Math.random() * 100 + 'vw';
+          // Random fall speed between 1.5s and 3s
+          ball.style.animationDuration = (Math.random() * 1.5 + 1.5) + 's';
+          
+          document.body.appendChild(ball);
+
+          // Clean up the DOM after it falls
+          setTimeout(() => {
+            ball.remove();
+          }, 3000);
+        }, i * 50); // Stagger the balls falling
+      }
+    }
+  </script>
+</body>
+</html>
