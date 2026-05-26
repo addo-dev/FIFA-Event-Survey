@@ -128,10 +128,10 @@
         body: formData
       }).catch(error => console.error('Error recording feedback:', error));
 
-      // 4. Reset after 3 seconds for the next person
+      // 4. Reset after 2 seconds for the next person
       setTimeout(() => {
         document.getElementById('thank-you').style.display = 'none';
-      }, 2500);
+      }, 2000);
     }
 
     function triggerSoccerBalls() {
@@ -149,10 +149,10 @@
           
           document.body.appendChild(ball);
 
-          // Remove the ball after 1.4 seconds
+          // Remove the ball 1.43 seconds after it appears. Last ball spawns at 570ms + 1430ms cleanup = exactly 2000ms
           setTimeout(() => {
             ball.remove();
-          }, 1400); 
+          }, 1430); 
           
         }, i * 30); // Stagger the balls every 30ms
       }
