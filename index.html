@@ -131,7 +131,7 @@
       // 4. Reset after 3 seconds for the next person
       setTimeout(() => {
         document.getElementById('thank-you').style.display = 'none';
-      }, 3000);
+      }, 2500);
     }
 
     function triggerSoccerBalls() {
@@ -144,15 +144,15 @@
           // Random horizontal position
           ball.style.left = Math.random() * 100 + 'vw';
           
-          // Random fall speed between 1.5 and 2.5 seconds
-          ball.style.animationDuration = (Math.random() * 1.0 + 1.5) + 's';
+          // Random fall speed between 0.8 and 1.4 seconds
+          ball.style.animationDuration = (Math.random() * 0.6 + 0.8) + 's';
           
           document.body.appendChild(ball);
 
-          // Remove the ball after 2.5 seconds
+          // Remove the ball after 1.4 seconds
           setTimeout(() => {
             ball.remove();
-          }, 2500); 
+          }, 1400); 
           
         }, i * 30); // Stagger the balls every 30ms
       }
