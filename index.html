@@ -144,15 +144,15 @@
           // Random horizontal position
           ball.style.left = Math.random() * 100 + 'vw';
           
-          // Random fall speed between 1 second and 2 seconds
-          ball.style.animationDuration = (Math.random() * 1.0 + 1.0) + 's';
+          // Random fall speed between 1.5 and 2.5 seconds
+          ball.style.animationDuration = (Math.random() * 1.0 + 1.5) + 's';
           
           document.body.appendChild(ball);
 
-          // Remove the ball after 2 seconds
+          // Remove the ball after 2.5 seconds
           setTimeout(() => {
             ball.remove();
-          }, 2000); 
+          }, 2500); 
           
         }, i * 30); // Stagger the balls every 30ms
       }
