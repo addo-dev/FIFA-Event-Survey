@@ -4,12 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Event Feedback</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
   <style>
     /* Coca-Cola / FIFA Vibe Styling */
     body {
       margin: 0;
       padding: 0;
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-family: 'Montserrat', sans-serif;
       background-color: #F40009; /* Coca-Cola Red */
       color: white;
       display: flex;
@@ -36,11 +39,11 @@
     }
 
     .face-btn {
-      width: 150px;
-      height: 150px;
+      width: 250px;
+      height: 250px;
       border-radius: 50%;
-      border: 6px solid white;
-      font-size: 5rem;
+      border: 8px solid white;
+      font-size: 8rem;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -125,10 +128,10 @@
         body: formData
       }).catch(error => console.error('Error recording feedback:', error));
 
-      // 4. Reset after 3.5 seconds for the next person
+      // 4. Reset after 3 seconds for the next person
       setTimeout(() => {
         document.getElementById('thank-you').style.display = 'none';
-      }, 3500);
+      }, 3000);
     }
 
     function triggerSoccerBalls() {
