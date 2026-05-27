@@ -6,9 +6,9 @@
   <title>Event Feedback</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&display=swap" rel="stylesheet">
   <style>
-    /* Coca-Cola / FIFA Vibe Styling */
+    /* Global & Vibe Styling */
     body {
       margin: 0;
       padding: 0;
@@ -22,43 +22,105 @@
       height: 100vh;
       overflow: hidden;
       user-select: none;
+      position: relative;
     }
 
+    /* Progress Bar */
+    .progress-container {
+      position: absolute;
+      top: 40px;
+      display: flex;
+      gap: 15px;
+    }
+
+    .progress-line {
+      width: 80px;
+      height: 6px;
+      border-radius: 3px;
+      background-color: #333333; /* Greyed out */
+      transition: background-color 0.3s ease;
+    }
+
+    .progress-line.active {
+      background-color: #FFFFFF; /* White active state */
+    }
+
+    /* Question Styling */
     h1 {
-      font-size: 4rem;
-      margin-bottom: 3rem;
+      font-size: 3.5rem;
+      margin: 0 5% 3rem 5%;
       text-align: center;
       text-transform: uppercase;
-      letter-spacing: 2px
+      letter-spacing: 2px;
+      min-height: 120px; /* Prevents button jumping if question length varies */
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
+    /* Squircle Buttons */
     .faces-container {
       display: flex;
       gap: 2rem;
     }
 
     .face-btn {
-      width: 250px;
-      height: 250px;
-      border-radius: 50%;
-      border: 8px solid white;
-      font-size: 10rem;
+      width: 240px;
+      height: 240px;
+      border-radius: 48px; /* High border-radius for squircle look */
+      border: none;
       cursor: pointer;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      transition: transform 0.1s
+      transition: transform 0.1s;
+      gap: 15px;
     }
 
     .face-btn:active {
-      transform: scale(0.9);
+      transform: scale(0.92);
     }
 
-    /* Intuitive Colors */
+    /* Emoji inside the button */
+    .btn-emoji {
+      font-size: 7rem;
+      line-height: 1;
+    }
+
+    /* Text inside the button */
+    .btn-text {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      text-transform: uppercase;
+    }
+
+    /* Existing Intuitive Colors */
     .very-happy { background-color: #00953a; }
     .happy { background-color: #8BC34A; }
     .unhappy { background-color: #FF9800; }
     .very-unhappy { background-color: #D32F2F; }
+
+    /* Restart Button */
+    .restart-btn {
+      position: absolute;
+      bottom: 30px;
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.25); /* Faint grey out */
+      font-family: inherit;
+      font-size: 1.2rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      cursor: pointer;
+      padding: 10px 20px;
+    }
+
+    .restart-btn:active {
+      color: rgba(255, 255, 255, 0.6);
+    }
 
     /* Thank You Overlay */
     #thank-you {
@@ -91,45 +153,110 @@
 </head>
 <body>
 
-  <h1>Did you enjoy today’s hospitality experience?</h1>
+  <div class="progress-container">
+    <div class="progress-line" id="line-1"></div>
+    <div class="progress-line" id="line-2"></div>
+    <div class="progress-line" id="line-3"></div>
+  </div>
+
+  <h1 id="question-text">Did you enjoy today’s hospitality experience?</h1>
 
   <div class="faces-container">
-    <button class="face-btn very-happy" onclick="submitFeedback('Very Happy')">😃</button>
-    <button class="face-btn happy" onclick="submitFeedback('Happy')">🙂</button>
-    <button class="face-btn unhappy" onclick="submitFeedback('Unhappy')">😕</button>
-    <button class="face-btn very-unhappy" onclick="submitFeedback('Very Unhappy')">☹️</button>
+    <button class="face-btn very-happy" onclick="handleAnswer('Absolutely!')">
+      <div class="btn-emoji">😃</div>
+      <div class="btn-text">Absolutely!</div>
+    </button>
+    <button class="face-btn happy" onclick="handleAnswer('Mostly')">
+      <div class="btn-emoji">🙂</div>
+      <div class="btn-text">Mostly</div>
+    </button>
+    <button class="face-btn unhappy" onclick="handleAnswer('Not Really')">
+      <div class="btn-emoji">😕</div>
+      <div class="btn-text">Not Really</div>
+    </button>
+    <button class="face-btn very-unhappy" onclick="handleAnswer('Not at All')">
+      <div class="btn-emoji">☹️</div>
+      <div class="btn-text">Not at All</div>
+    </button>
   </div>
+
+  <button class="restart-btn" onclick="resetFlow()">Restart</button>
 
   <div id="thank-you">
     <div>Thank you for your feedback!</div>
   </div>
 
   <script>
-    // --- REPLACE THIS URL WITH YOUR GOOGLE APPS SCRIPT WEB APP URL ---
+    // --- YOUR EXACT GOOGLE APPS SCRIPT WEB APP URL ---
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyeWG0NfKaZMNbnl5u-STkRd3NKkFZQVbRyH5ozcJ7_Qv4pkb8fLacgpriGovm8_qfmyA/exec";
 
-    function submitFeedback(rating) {
-      // 1. Show the Thank You screen
+    // Application State
+    const questions = [
+      "Did you enjoy today’s hospitality experience?",
+      "Did the event feel uniquely Coca-Cola?",
+      "Did the event contribute to your unforgettable FIFA World Cup Experience?"
+    ];
+    let currentQuestionIndex = 0;
+    let userAnswers = [];
+
+    // Initialize the app on load
+    window.onload = () => {
+      renderQuestion();
+    };
+
+    function handleAnswer(answerText) {
+      // 1. Save the answer
+      userAnswers.push(answerText);
+
+      // 2. Check if there are more questions
+      if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex++;
+        renderQuestion();
+      } else {
+        // Last question answered - trigger finish flow
+        finishSurvey();
+      }
+    }
+
+    function renderQuestion() {
+      // Update Question Text
+      document.getElementById('question-text').innerText = questions[currentQuestionIndex];
+
+      // Update Progress Bar
+      document.getElementById('line-1').className = currentQuestionIndex >= 0 ? 'progress-line active' : 'progress-line';
+      document.getElementById('line-2').className = currentQuestionIndex >= 1 ? 'progress-line active' : 'progress-line';
+      document.getElementById('line-3').className = currentQuestionIndex >= 2 ? 'progress-line active' : 'progress-line';
+    }
+
+    function finishSurvey() {
+      // Show Thank You Screen & Trigger Animation
       document.getElementById('thank-you').style.display = 'flex';
-      
-      // 2. Trigger Soccer Balls
       triggerSoccerBalls();
 
-      // 3. Send Data to Google Sheets
+      // Send Data to Google Sheets
       const formData = new FormData();
-      formData.append('rating', rating);
+      formData.append('q1', userAnswers[0]);
+      formData.append('q2', userAnswers[1]);
+      formData.append('q3', userAnswers[2]);
 
-      // We use mode: 'no-cors' so the browser doesn't block the request to the Google script.
       fetch(SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
         body: formData
       }).catch(error => console.error('Error recording feedback:', error));
 
-      // 4. Reset after 2 seconds for the next person
+      // Reset after exactly 2 seconds
       setTimeout(() => {
         document.getElementById('thank-you').style.display = 'none';
+        resetFlow();
       }, 2000);
+    }
+
+    function resetFlow() {
+      // Clear answers, reset to first question, and re-render UI
+      userAnswers = [];
+      currentQuestionIndex = 0;
+      renderQuestion();
     }
 
     function triggerSoccerBalls() {
@@ -139,20 +266,16 @@
           ball.innerText = '⚽';
           ball.classList.add('soccer-ball');
           
-          // Random horizontal position
           ball.style.left = Math.random() * 100 + 'vw';
-          
-          // Random fall speed between 0.8 and 1.4 seconds
           ball.style.animationDuration = (Math.random() * 0.6 + 0.8) + 's';
           
           document.body.appendChild(ball);
 
-          // Remove the ball 1.43 seconds after it appears. Last ball spawns at 570ms + 1430ms cleanup = exactly 2000ms
           setTimeout(() => {
             ball.remove();
           }, 1430); 
           
-        }, i * 30); // Stagger the balls every 30ms
+        }, i * 30);
       }
     }
   </script>
