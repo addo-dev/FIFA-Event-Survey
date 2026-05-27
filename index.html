@@ -52,7 +52,7 @@
       text-align: center;
       text-transform: uppercase;
       letter-spacing: 2px;
-      min-height: 120px; /* Prevents button jumping if question length varies */
+      min-height: 120px; 
       display: flex;
       align-items: center;
       justify-content: center;
@@ -67,14 +67,15 @@
     .face-btn {
       width: 240px;
       height: 240px;
-      border-radius: 48px; /* High border-radius for squircle look */
-      border: none;
+      border-radius: 48px; 
+      background-color: #FFFFFF; /* White background */
+      border: 8px solid transparent; /* Border setup for colors below */
       cursor: pointer;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      transition: transform 0.1s;
+      transition: transform 0.1s, background-color 0.1s;
       gap: 15px;
     }
 
@@ -93,15 +94,27 @@
       font-family: 'Montserrat', sans-serif;
       font-size: 1.8rem;
       font-weight: 800;
-      color: #FFFFFF;
+      color: #000000; /* Black text by default */
       text-transform: uppercase;
+      transition: color 0.1s;
     }
 
-    /* Existing Intuitive Colors */
-    .very-happy { background-color: #00953a; }
-    .happy { background-color: #8BC34A; }
-    .unhappy { background-color: #FF9800; }
-    .very-unhappy { background-color: #D32F2F; }
+    /* Intuitive Colors: Outline default, Fill on active */
+    .very-happy { border-color: #00953a; }
+    .very-happy:active { background-color: #00953a; }
+    .very-happy:active .btn-text { color: #FFFFFF; }
+
+    .happy { border-color: #8BC34A; }
+    .happy:active { background-color: #8BC34A; }
+    .happy:active .btn-text { color: #FFFFFF; }
+
+    .unhappy { border-color: #FF9800; }
+    .unhappy:active { background-color: #FF9800; }
+    .unhappy:active .btn-text { color: #FFFFFF; }
+
+    .very-unhappy { border-color: #D32F2F; }
+    .very-unhappy:active { background-color: #D32F2F; }
+    .very-unhappy:active .btn-text { color: #FFFFFF; }
 
     /* Restart Button */
     .restart-btn {
@@ -109,7 +122,7 @@
       bottom: 30px;
       background: none;
       border: none;
-      color: rgba(255, 255, 255, 0.25); /* Faint grey out */
+      color: rgba(255, 255, 255, 0.25);
       font-family: inherit;
       font-size: 1.2rem;
       font-weight: 600;
@@ -137,11 +150,12 @@
       text-align: center;
     }
 
-    /* Falling Soccer Balls */
+    /* Falling Custom Soccer Balls */
     .soccer-ball {
       position: absolute;
-      font-size: 3rem;
-      top: -50px;
+      width: 55px; /* Sized to match the original 3rem emoji */
+      height: 55px;
+      top: -70px; /* Start just above the screen */
       z-index: 15;
       animation: fall linear forwards;
     }
@@ -187,7 +201,6 @@
   </div>
 
   <script>
-    // --- YOUR EXACT GOOGLE APPS SCRIPT WEB APP URL ---
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyeWG0NfKaZMNbnl5u-STkRd3NKkFZQVbRyH5ozcJ7_Qv4pkb8fLacgpriGovm8_qfmyA/exec";
 
     // Application State
@@ -199,41 +212,33 @@
     let currentQuestionIndex = 0;
     let userAnswers = [];
 
-    // Initialize the app on load
     window.onload = () => {
       renderQuestion();
     };
 
     function handleAnswer(answerText) {
-      // 1. Save the answer
       userAnswers.push(answerText);
 
-      // 2. Check if there are more questions
       if (currentQuestionIndex < questions.length - 1) {
         currentQuestionIndex++;
         renderQuestion();
       } else {
-        // Last question answered - trigger finish flow
         finishSurvey();
       }
     }
 
     function renderQuestion() {
-      // Update Question Text
       document.getElementById('question-text').innerText = questions[currentQuestionIndex];
 
-      // Update Progress Bar
       document.getElementById('line-1').className = currentQuestionIndex >= 0 ? 'progress-line active' : 'progress-line';
       document.getElementById('line-2').className = currentQuestionIndex >= 1 ? 'progress-line active' : 'progress-line';
       document.getElementById('line-3').className = currentQuestionIndex >= 2 ? 'progress-line active' : 'progress-line';
     }
 
     function finishSurvey() {
-      // Show Thank You Screen & Trigger Animation
       document.getElementById('thank-you').style.display = 'flex';
       triggerSoccerBalls();
 
-      // Send Data to Google Sheets
       const formData = new FormData();
       formData.append('q1', userAnswers[0]);
       formData.append('q2', userAnswers[1]);
@@ -245,7 +250,6 @@
         body: formData
       }).catch(error => console.error('Error recording feedback:', error));
 
-      // Reset after exactly 2 seconds
       setTimeout(() => {
         document.getElementById('thank-you').style.display = 'none';
         resetFlow();
@@ -253,7 +257,6 @@
     }
 
     function resetFlow() {
-      // Clear answers, reset to first question, and re-render UI
       userAnswers = [];
       currentQuestionIndex = 0;
       renderQuestion();
@@ -262,8 +265,9 @@
     function triggerSoccerBalls() {
       for (let i = 0; i < 20; i++) {
         setTimeout(() => {
-          const ball = document.createElement('div');
-          ball.innerText = '⚽';
+          // Changed from a text div to an image element pulling your uploaded file
+          const ball = document.createElement('img');
+          ball.src = 'KO FIFA Soccer Ball.png';
           ball.classList.add('soccer-ball');
           
           ball.style.left = Math.random() * 100 + 'vw';
