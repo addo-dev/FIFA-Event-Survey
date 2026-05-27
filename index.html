@@ -263,7 +263,7 @@
     }
 
     function triggerSoccerBalls() {
-      for (let i = 0; i < 7000; i++) {
+      for (let i = 0; i < 150; i++) {
         setTimeout(() => {
           // Changed from a text div to an image element pulling your uploaded file
           const ball = document.createElement('img');
@@ -271,15 +271,15 @@
           ball.classList.add('soccer-ball');
           
           ball.style.left = Math.random() * 100 + 'vw';
-          ball.style.animationDuration = (Math.random() * 1.0 + 1.5) + 's';
+          ball.style.animationDuration = (Math.random() * 0.9 + 1.5) + 's';
           
           document.body.appendChild(ball);
 
           setTimeout(() => {
             ball.remove();
-          }, 2500); 
+          }, 2400); 
           
-        }, i * 30);
+        }, i * 4);
       }
     }
   </script>
