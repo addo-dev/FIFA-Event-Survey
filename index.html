@@ -23,20 +23,21 @@
       overflow: hidden;
       user-select: none;
       position: relative;
+      -webkit-font-smoothing: antialiased;
     }
 
     /* Progress Bar */
     .progress-container {
       position: absolute;
-      top: 50px;
+      top: 45px;
       display: flex;
-      gap: 20px;
+      gap: 15px;
     }
 
     .progress-line {
-      width: 100px;
-      height: 8px;
-      border-radius: 4px;
+      width: 90px;
+      height: 7px;
+      border-radius: 3.5px;
       background-color: #333333; 
       transition: background-color 0.3s ease;
     }
@@ -46,12 +47,13 @@
     }
 
     /* =========================================
-       NEW MAGIC WRAPPER
-       Expanded to fill much more of the screen!
+       OMNI-RESPONSIVE WRAPPER
+       Scales based on width AND height. Prevents 
+       bottom-cutoff in short laptop browser windows!
        ========================================= */
     .content-wrapper {
-      width: 96vw; /* Takes up 96% of the screen width */
-      max-width: 1800px; /* Greatly increased the ceiling for large tablets */
+      width: 94vw; 
+      max-width: min(1300px, 160vh); /* The magic height-aware scaling rule */
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -59,15 +61,14 @@
 
     /* Question Styling */
     h1 {
-      /* Increased the flexible size and maximum size ceilings */
-      font-size: clamp(2.5rem, 5.5vw, 4.8rem);
+      font-size: clamp(2rem, 4.5vw, 3.8rem); 
       width: 100%; 
-      margin: 0 0 60px 0; 
+      margin: 0 0 50px 0; 
       text-align: center;
       text-transform: uppercase;
       letter-spacing: 2px;
       line-height: 1.2;
-      min-height: 130px; 
+      min-height: 120px; 
       display: flex;
       align-items: center;
       justify-content: center;
@@ -76,7 +77,7 @@
     /* Squircle Buttons */
     .faces-container {
       display: flex;
-      gap: 4%; /* Widened the gap slightly to spread them out nicely */
+      gap: 3.5%; 
       width: 100%; 
       justify-content: space-between;
     }
@@ -86,32 +87,30 @@
       aspect-ratio: 1 / 1; 
       border-radius: 20%; 
       background-color: #FFFFFF; 
-      border: clamp(6px, 1vw, 12px) solid transparent; /* Scaled up border thickness */
+      border: clamp(5px, 0.9vw, 10px) solid transparent; 
       cursor: pointer;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       transition: transform 0.1s, background-color 0.1s;
-      gap: clamp(10px, 3vw, 25px); /* Increased gap between emoji and text */
+      gap: clamp(8px, 2.5vw, 20px); 
     }
 
     .face-btn:active {
-      transform: scale(0.92);
+      transform: scale(0.92); 
     }
 
     /* Emoji inside the button */
     .btn-emoji {
-      /* Massive increase to upper limits so they get nice and big */
-      font-size: clamp(4rem, 9vw, 9.5rem); 
+      font-size: clamp(3.5rem, 7vw, 7.5rem); 
       line-height: 1;
     }
 
     /* Text inside the button */
     .btn-text {
       font-family: 'Montserrat', sans-serif;
-      /* Increased to match the larger buttons */
-      font-size: clamp(1.2rem, 2.5vw, 2.2rem); 
+      font-size: clamp(1.2rem, 2.2vw, 1.8rem); 
       font-weight: 800;
       color: #000000; 
       text-transform: uppercase;
@@ -148,6 +147,7 @@
       text-transform: uppercase;
       cursor: pointer;
       padding: 10px 20px;
+      transition: color 0.2s ease;
     }
 
     .restart-btn:active {
@@ -164,7 +164,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-size: clamp(3rem, 7vw, 6rem); /* Scaled up the Thank You text */
+      font-size: clamp(3rem, 6.5vw, 5.5rem); 
       font-weight: bold;
       text-align: center;
     }
@@ -172,15 +172,15 @@
     /* Falling Custom Soccer Balls */
     .soccer-ball {
       position: absolute;
-      width: 100px; /* Scaled up slightly to match the larger UI */
-      height: 100px;
-      top: -120px; 
+      width: 85px; 
+      height: 85px;
+      top: -100px; 
       z-index: 15;
       animation: fall linear forwards;
     }
 
     @keyframes fall {
-      to { transform: translateY(150vh) rotate(360deg); }
+      to { transform: translateY(150vh) rotate(360deg); } 
     }
   </style>
 </head>
