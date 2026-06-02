@@ -28,15 +28,15 @@
     /* Progress Bar */
     .progress-container {
       position: absolute;
-      top: 40px;
+      top: 50px;
       display: flex;
-      gap: 15px;
+      gap: 20px;
     }
 
     .progress-line {
-      width: 80px;
-      height: 6px;
-      border-radius: 3px;
+      width: 100px;
+      height: 8px;
+      border-radius: 4px;
       background-color: #333333; 
       transition: background-color 0.3s ease;
     }
@@ -47,12 +47,11 @@
 
     /* =========================================
        NEW MAGIC WRAPPER
-       This locks the text and buttons together
-       so they always match perfectly in width.
+       Expanded to fill much more of the screen!
        ========================================= */
     .content-wrapper {
-      width: 92vw; /* Takes up 92% of the screen width */
-      max-width: 1200px; /* Stops it from getting absurdly huge on big TVs */
+      width: 96vw; /* Takes up 96% of the screen width */
+      max-width: 1800px; /* Greatly increased the ceiling for large tablets */
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -60,15 +59,15 @@
 
     /* Question Styling */
     h1 {
-      /* clamp(minimum size, flexible size, maximum size) */
-      font-size: clamp(2rem, 4.5vw, 3.8rem);
-      width: 100%; /* Locks text box exactly to the width of the wrapper */
-      margin: 0 0 50px 0; 
+      /* Increased the flexible size and maximum size ceilings */
+      font-size: clamp(2.5rem, 5.5vw, 4.8rem);
+      width: 100%; 
+      margin: 0 0 60px 0; 
       text-align: center;
       text-transform: uppercase;
       letter-spacing: 2px;
       line-height: 1.2;
-      min-height: 120px; 
+      min-height: 130px; 
       display: flex;
       align-items: center;
       justify-content: center;
@@ -77,24 +76,24 @@
     /* Squircle Buttons */
     .faces-container {
       display: flex;
-      gap: 3%; /* Flexible gap between buttons */
-      width: 100%; /* Stretches to perfectly fill the wrapper */
+      gap: 4%; /* Widened the gap slightly to spread them out nicely */
+      width: 100%; 
       justify-content: space-between;
     }
 
     .face-btn {
-      flex: 1; /* Tells all 4 buttons to take up exactly equal space */
-      aspect-ratio: 1 / 1; /* FORCES the buttons to stay perfectly square! */
-      border-radius: 20%; /* Scalable rounded corners (creates the squircle) */
+      flex: 1; 
+      aspect-ratio: 1 / 1; 
+      border-radius: 20%; 
       background-color: #FFFFFF; 
-      border: clamp(4px, 0.8vw, 8px) solid transparent; 
+      border: clamp(6px, 1vw, 12px) solid transparent; /* Scaled up border thickness */
       cursor: pointer;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       transition: transform 0.1s, background-color 0.1s;
-      gap: clamp(5px, 2vw, 15px); /* Flexible gap between emoji and text */
+      gap: clamp(10px, 3vw, 25px); /* Increased gap between emoji and text */
     }
 
     .face-btn:active {
@@ -103,14 +102,16 @@
 
     /* Emoji inside the button */
     .btn-emoji {
-      font-size: clamp(3rem, 7vw, 7rem); /* Scales smoothly */
+      /* Massive increase to upper limits so they get nice and big */
+      font-size: clamp(4rem, 9vw, 9.5rem); 
       line-height: 1;
     }
 
     /* Text inside the button */
     .btn-text {
       font-family: 'Montserrat', sans-serif;
-      font-size: clamp(1.2rem, 2vw, 1.8rem); /* Scales smoothly */
+      /* Increased to match the larger buttons */
+      font-size: clamp(1.2rem, 2.5vw, 2.2rem); 
       font-weight: 800;
       color: #000000; 
       text-transform: uppercase;
@@ -163,7 +164,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-size: clamp(3rem, 6vw, 5rem); /* Responsive Thank You text */
+      font-size: clamp(3rem, 7vw, 6rem); /* Scaled up the Thank You text */
       font-weight: bold;
       text-align: center;
     }
@@ -171,9 +172,9 @@
     /* Falling Custom Soccer Balls */
     .soccer-ball {
       position: absolute;
-      width: 85px; 
-      height: 85px;
-      top: -100px; 
+      width: 100px; /* Scaled up slightly to match the larger UI */
+      height: 100px;
+      top: -120px; 
       z-index: 15;
       animation: fall linear forwards;
     }
