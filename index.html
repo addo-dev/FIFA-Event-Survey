@@ -28,32 +28,47 @@
     /* Progress Bar */
     .progress-container {
       position: absolute;
-      top: 5vmin;
+      top: 40px;
       display: flex;
-      gap: 2vmin;
+      gap: 15px;
     }
 
     .progress-line {
-      width: 12vmin;
-      height: 1vmin;
-      border-radius: 0.5vmin;
-      background-color: #333333; /* Greyed out */
+      width: 80px;
+      height: 6px;
+      border-radius: 3px;
+      background-color: #333333; 
       transition: background-color 0.3s ease;
     }
 
     .progress-line.active {
-      background-color: #FFFFFF; /* White active state */
+      background-color: #FFFFFF; 
+    }
+
+    /* =========================================
+       NEW MAGIC WRAPPER
+       This locks the text and buttons together
+       so they always match perfectly in width.
+       ========================================= */
+    .content-wrapper {
+      width: 92vw; /* Takes up 92% of the screen width */
+      max-width: 1200px; /* Stops it from getting absurdly huge on big TVs */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     /* Question Styling */
     h1 {
-      font-size: 4.2vmin; /* Decreased slightly so it fits on two lines */
-      max-width: 93vmin; /* Locks the width to perfectly match the button edges */
-      margin: 0 auto 5vmin auto; /* Keeps it perfectly centered */
+      /* clamp(minimum size, flexible size, maximum size) */
+      font-size: clamp(2rem, 4.5vw, 3.8rem);
+      width: 100%; /* Locks text box exactly to the width of the wrapper */
+      margin: 0 0 50px 0; 
       text-align: center;
       text-transform: uppercase;
-      letter-spacing: 0.3vmin;
-      min-height: 15vmin; 
+      letter-spacing: 2px;
+      line-height: 1.2;
+      min-height: 120px; 
       display: flex;
       align-items: center;
       justify-content: center;
@@ -62,27 +77,24 @@
     /* Squircle Buttons */
     .faces-container {
       display: flex;
-      gap: 3vmin;
-      justify-content: center;
-      width: 100%;
-      padding: 0 2vmin;
-      box-sizing: border-box;
-      flex-wrap: wrap; /* Allows wrapping on extremely narrow screens */
+      gap: 3%; /* Flexible gap between buttons */
+      width: 100%; /* Stretches to perfectly fill the wrapper */
+      justify-content: space-between;
     }
 
     .face-btn {
-      width: 21vmin;
-      height: 21vmin;
-      border-radius: 4.5vmin; 
-      background-color: #FFFFFF; /* White background */
-      border: 0.8vmin solid transparent; /* Border setup for colors below */
+      flex: 1; /* Tells all 4 buttons to take up exactly equal space */
+      aspect-ratio: 1 / 1; /* FORCES the buttons to stay perfectly square! */
+      border-radius: 20%; /* Scalable rounded corners (creates the squircle) */
+      background-color: #FFFFFF; 
+      border: clamp(4px, 0.8vw, 8px) solid transparent; 
       cursor: pointer;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       transition: transform 0.1s, background-color 0.1s;
-      gap: 1.5vmin;
+      gap: clamp(5px, 2vw, 15px); /* Flexible gap between emoji and text */
     }
 
     .face-btn:active {
@@ -91,16 +103,16 @@
 
     /* Emoji inside the button */
     .btn-emoji {
-      font-size: 7vmin;
+      font-size: clamp(3rem, 7vw, 7rem); /* Scales smoothly */
       line-height: 1;
     }
 
     /* Text inside the button */
     .btn-text {
       font-family: 'Montserrat', sans-serif;
-      font-size: 2vmin;
+      font-size: clamp(1.2rem, 2vw, 1.8rem); /* Scales smoothly */
       font-weight: 800;
-      color: #000000; /* Black text by default */
+      color: #000000; 
       text-transform: uppercase;
       transition: color 0.1s;
     }
@@ -125,16 +137,16 @@
     /* Restart Button */
     .restart-btn {
       position: absolute;
-      bottom: 4vmin;
+      bottom: 30px;
       background: none;
       border: none;
       color: rgba(255, 255, 255, 0.25);
       font-family: inherit;
-      font-size: 1.8vmin;
+      font-size: 1.2rem;
       font-weight: 600;
       text-transform: uppercase;
       cursor: pointer;
-      padding: 1.5vmin 3vmin;
+      padding: 10px 20px;
     }
 
     .restart-btn:active {
@@ -151,7 +163,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-size: 8vmin;
+      font-size: clamp(3rem, 6vw, 5rem); /* Responsive Thank You text */
       font-weight: bold;
       text-align: center;
     }
@@ -159,9 +171,9 @@
     /* Falling Custom Soccer Balls */
     .soccer-ball {
       position: absolute;
-      width: 8vmin; /* Matches the larger 85px size from your recent update */
-      height: 8vmin;
-      top: -10vmin; /* Start just above the screen */
+      width: 85px; 
+      height: 85px;
+      top: -100px; 
       z-index: 15;
       animation: fall linear forwards;
     }
@@ -179,25 +191,27 @@
     <div class="progress-line" id="line-3"></div>
   </div>
 
-  <h1 id="question-text">Did you enjoy today’s hospitality experience?</h1>
+  <div class="content-wrapper">
+    <h1 id="question-text">Did you enjoy today’s hospitality experience?</h1>
 
-  <div class="faces-container">
-    <button class="face-btn very-happy" onclick="handleAnswer('Absolutely!')">
-      <div class="btn-emoji">😃</div>
-      <div class="btn-text">Absolutely!</div>
-    </button>
-    <button class="face-btn happy" onclick="handleAnswer('Mostly')">
-      <div class="btn-emoji">🙂</div>
-      <div class="btn-text">Mostly</div>
-    </button>
-    <button class="face-btn unhappy" onclick="handleAnswer('Not Really')">
-      <div class="btn-emoji">😕</div>
-      <div class="btn-text">Not Really</div>
-    </button>
-    <button class="face-btn very-unhappy" onclick="handleAnswer('Not at All')">
-      <div class="btn-emoji">☹️</div>
-      <div class="btn-text">Not at All</div>
-    </button>
+    <div class="faces-container">
+      <button class="face-btn very-happy" onclick="handleAnswer('Absolutely!')">
+        <div class="btn-emoji">😃</div>
+        <div class="btn-text">Absolutely!</div>
+      </button>
+      <button class="face-btn happy" onclick="handleAnswer('Mostly')">
+        <div class="btn-emoji">🙂</div>
+        <div class="btn-text">Mostly</div>
+      </button>
+      <button class="face-btn unhappy" onclick="handleAnswer('Not Really')">
+        <div class="btn-emoji">😕</div>
+        <div class="btn-text">Not Really</div>
+      </button>
+      <button class="face-btn very-unhappy" onclick="handleAnswer('Not at All')">
+        <div class="btn-emoji">☹️</div>
+        <div class="btn-text">Not at All</div>
+      </button>
+    </div>
   </div>
 
   <button class="restart-btn" onclick="resetFlow()">Restart</button>
