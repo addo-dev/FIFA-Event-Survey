@@ -175,10 +175,10 @@
         body: formData
       }).catch(error => console.error('Error recording feedback:', error));
 
-      // 3. Hide the Thank You screen after 3 seconds to reset for the next person
+      // 3. Hide the Thank You screen after 2.8 seconds to reset for the next person
       setTimeout(() => {
         document.getElementById('thank-you').style.display = 'none';
-      }, 3000);
+      }, 2800);
     }
 
     function triggerSoccerBalls() {
