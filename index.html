@@ -28,12 +28,11 @@
 
     /* =========================================
        OMNI-RESPONSIVE WRAPPER
-       Adjusted max-width so the 2 buttons sit 
-       perfectly centered without getting too massive.
+       Expanded to let the text stretch out widely
        ========================================= */
     .content-wrapper {
-      width: 86vw; 
-      max-width: min(900px, 120vh); 
+      width: 94vw; 
+      max-width: 1400px; /* Allows the text to stretch very wide */
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -41,7 +40,7 @@
 
     /* Question Styling */
     h1 {
-      font-size: clamp(2rem, 4.5vw, 3.8rem); 
+      font-size: clamp(2.5rem, 5vw, 4.5rem); 
       width: 100%; 
       margin: 0 0 60px 0; 
       text-align: center;
@@ -56,8 +55,9 @@
     /* Squircle Buttons */
     .faces-container {
       display: flex;
-      gap: 5%; /* Generous gap for two buttons */
+      gap: 5%; 
       width: 100%; 
+      max-width: 800px; /* Strict limit on button width so text overhangs! */
       justify-content: center;
     }
 
@@ -111,7 +111,7 @@
       display: none;
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background-color: rgba(0, 0, 0, 0.95);
+      background-color: #000000; /* Changed to solid black to hide the UI */
       z-index: 10;
       flex-direction: column;
       align-items: center;
