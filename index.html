@@ -26,32 +26,14 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Progress Bar */
-    .progress-container {
-      position: absolute;
-      top: 45px;
-      display: flex;
-      gap: 15px;
-    }
-
-    .progress-line {
-      width: 90px;
-      height: 7px;
-      border-radius: 3.5px;
-      background-color: #333333; 
-      transition: background-color 0.3s ease;
-    }
-
-    .progress-line.active {
-      background-color: #FFFFFF; 
-    }
-
     /* =========================================
-       OMNI-RESPONSIVE WRAPPER (PADDED EDGES)
+       OMNI-RESPONSIVE WRAPPER
+       Adjusted max-width so the 2 buttons sit 
+       perfectly centered without getting too massive.
        ========================================= */
     .content-wrapper {
       width: 86vw; 
-      max-width: min(1200px, 150vh); 
+      max-width: min(900px, 120vh); 
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -61,12 +43,11 @@
     h1 {
       font-size: clamp(2rem, 4.5vw, 3.8rem); 
       width: 100%; 
-      margin: 0 0 50px 0; 
+      margin: 0 0 60px 0; 
       text-align: center;
       text-transform: uppercase;
       letter-spacing: 2px;
       line-height: 1.2;
-      min-height: 120px; 
       display: flex;
       align-items: center;
       justify-content: center;
@@ -75,9 +56,9 @@
     /* Squircle Buttons */
     .faces-container {
       display: flex;
-      gap: 2.5%; /* Slightly reduced horizontal spacing (was 3.5%) */
+      gap: 5%; /* Generous gap for two buttons */
       width: 100%; 
-      justify-content: space-between;
+      justify-content: center;
     }
 
     .face-btn {
@@ -101,56 +82,29 @@
 
     /* Emoji inside the button */
     .btn-emoji {
-      font-size: clamp(3.5rem, 7vw, 7.5rem); 
+      font-size: clamp(3.5rem, 8vw, 8.5rem); 
       line-height: 1;
     }
 
     /* Text inside the button */
     .btn-text {
       font-family: 'Montserrat', sans-serif;
-      font-size: clamp(1.2rem, 2.2vw, 1.8rem); 
+      font-size: clamp(1.2rem, 2.5vw, 2.2rem); 
       font-weight: 800;
       color: #000000; 
       text-transform: uppercase;
       transition: color 0.1s;
+      text-align: center;
     }
 
-    /* Intuitive Colors: Outline default, Fill on active */
+    /* Intuitive Colors: Green (YES) and Orange (EXPECTED MORE) */
     .very-happy { border-color: #00953a; }
     .very-happy:active { background-color: #00953a; }
     .very-happy:active .btn-text { color: #FFFFFF; }
 
-    .happy { border-color: #8BC34A; }
-    .happy:active { background-color: #8BC34A; }
-    .happy:active .btn-text { color: #FFFFFF; }
-
     .unhappy { border-color: #FF9800; }
     .unhappy:active { background-color: #FF9800; }
     .unhappy:active .btn-text { color: #FFFFFF; }
-
-    .very-unhappy { border-color: #D32F2F; }
-    .very-unhappy:active { background-color: #D32F2F; }
-    .very-unhappy:active .btn-text { color: #FFFFFF; }
-
-    /* Restart Button */
-    .restart-btn {
-      position: absolute;
-      bottom: 30px;
-      background: none;
-      border: none;
-      color: rgba(255, 255, 255, 0.25);
-      font-family: inherit;
-      font-size: 1.2rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      cursor: pointer;
-      padding: 10px 20px;
-      transition: color 0.2s ease;
-    }
-
-    .restart-btn:active {
-      color: rgba(255, 255, 255, 0.6);
-    }
 
     /* Thank You Overlay */
     #thank-you {
@@ -184,36 +138,20 @@
 </head>
 <body>
 
-  <div class="progress-container">
-    <div class="progress-line" id="line-1"></div>
-    <div class="progress-line" id="line-2"></div>
-    <div class="progress-line" id="line-3"></div>
-  </div>
-
   <div class="content-wrapper">
-    <h1 id="question-text">Did you enjoy today’s hospitality experience?</h1>
+    <h1>Did Coca-Cola hospitality deliver your ultimate FIFA World Cup Matchday?</h1>
 
     <div class="faces-container">
-      <button class="face-btn very-happy" onclick="handleAnswer('Absolutely!')">
+      <button class="face-btn very-happy" onclick="finishSurvey('100% YES!')">
         <div class="btn-emoji">😃</div>
-        <div class="btn-text">Absolutely!</div>
+        <div class="btn-text">100% YES!</div>
       </button>
-      <button class="face-btn happy" onclick="handleAnswer('Mostly')">
-        <div class="btn-emoji">🙂</div>
-        <div class="btn-text">Mostly</div>
-      </button>
-      <button class="face-btn unhappy" onclick="handleAnswer('Not Really')">
+      <button class="face-btn unhappy" onclick="finishSurvey('EXPECTED MORE')">
         <div class="btn-emoji">😕</div>
-        <div class="btn-text">Not Really</div>
-      </button>
-      <button class="face-btn very-unhappy" onclick="handleAnswer('Not at All')">
-        <div class="btn-emoji">☹️</div>
-        <div class="btn-text">Not at All</div>
+        <div class="btn-text">EXPECTED MORE</div>
       </button>
     </div>
   </div>
-
-  <button class="restart-btn" onclick="resetFlow()">Restart</button>
 
   <div id="thank-you">
     <div>Thank you for your feedback!</div>
@@ -222,46 +160,14 @@
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyeWG0NfKaZMNbnl5u-STkRd3NKkFZQVbRyH5ozcJ7_Qv4pkb8fLacgpriGovm8_qfmyA/exec";
 
-    // Application State
-    const questions = [
-      "Did you enjoy today’s hospitality experience?",
-      "Did the event feel uniquely Coca-Cola?",
-      "Did the event contribute to your unforgettable FIFA World Cup Experience?"
-    ];
-    let currentQuestionIndex = 0;
-    let userAnswers = [];
-
-    window.onload = () => {
-      renderQuestion();
-    };
-
-    function handleAnswer(answerText) {
-      userAnswers.push(answerText);
-
-      if (currentQuestionIndex < questions.length - 1) {
-        currentQuestionIndex++;
-        renderQuestion();
-      } else {
-        finishSurvey();
-      }
-    }
-
-    function renderQuestion() {
-      document.getElementById('question-text').innerText = questions[currentQuestionIndex];
-
-      document.getElementById('line-1').className = currentQuestionIndex >= 0 ? 'progress-line active' : 'progress-line';
-      document.getElementById('line-2').className = currentQuestionIndex >= 1 ? 'progress-line active' : 'progress-line';
-      document.getElementById('line-3').className = currentQuestionIndex >= 2 ? 'progress-line active' : 'progress-line';
-    }
-
-    function finishSurvey() {
+    function finishSurvey(answerText) {
+      // 1. Show the Thank You screen and trigger balls
       document.getElementById('thank-you').style.display = 'flex';
       triggerSoccerBalls();
 
+      // 2. Send the single answer data to Google Sheets
       const formData = new FormData();
-      formData.append('q1', userAnswers[0]);
-      formData.append('q2', userAnswers[1]);
-      formData.append('q3', userAnswers[2]);
+      formData.append('q1', answerText);
 
       fetch(SCRIPT_URL, {
         method: 'POST',
@@ -269,16 +175,10 @@
         body: formData
       }).catch(error => console.error('Error recording feedback:', error));
 
+      // 3. Hide the Thank You screen after 3 seconds to reset for the next person
       setTimeout(() => {
         document.getElementById('thank-you').style.display = 'none';
-        resetFlow();
       }, 3000);
-    }
-
-    function resetFlow() {
-      userAnswers = [];
-      currentQuestionIndex = 0;
-      renderQuestion();
     }
 
     function triggerSoccerBalls() {
